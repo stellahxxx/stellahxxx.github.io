@@ -26,31 +26,40 @@
 
 
 <h4 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h4><p>「dig」 is a command-line tool for querying DNS information and troubleshooting DNS related issues.</p>
-</div></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2021-06-02T06:02:53.000Z" title="6/2/2021, 2:02:53 PM">2021-06-02</time></span><span class="level-item">Updated&nbsp;<time dateTime="2021-06-02T06:47:22.890Z" title="6/2/2021, 2:47:22 PM">2021-06-02</time></span><span class="level-item"><a class="link-muted" href="/categories/Techo/">Techo</a></span><span class="level-item">7 minutes read (About 1031 words)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2021/06/02/API-Gateways/">API Gateways</a></h1><div class="content"><p><a target="_blank" rel="noopener" href="https://priyalwalpita.medium.com/api-gateways-how-to-use-it-properly-d0535571f9c2">by <em>Priyal Walpita</em></a></p>
+</div></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2021-06-02T06:02:53.000Z" title="6/2/2021, 2:02:53 PM">2021-06-02</time></span><span class="level-item">Updated&nbsp;<time dateTime="2021-06-03T04:11:01.523Z" title="6/3/2021, 12:11:01 PM">2021-06-03</time></span><span class="level-item"><a class="link-muted" href="/categories/Techo/">Techo</a></span><span class="level-item">8 minutes read (About 1135 words)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2021/06/02/API-Gateways/">API Gateways</a></h1><div class="content"><p><a target="_blank" rel="noopener" href="https://priyalwalpita.medium.com/api-gateways-how-to-use-it-properly-d0535571f9c2">by <em>Priyal Walpita</em></a></p>
 <p>API网关是一种许多API开发者用来封装API端点的典型的模式。但是，更常见的是用API网关来反设计模式。本文聚焦于API网关模式的正确使用。</p>
 <p>一个API（应用程序接口）网关是一个位于其他后端（微）服务的接口。API网关可以用来确保安全性、可扩展性和高可用性等系统架构特性。</p>
 <p>我们是否能不使用网关来实现我们的服务（例如RESTFull或者SOAP）？当然可以。但是单独的服务需要不少非业务具体功能，例如路由、认证、授权、TLS、日志、追踪等等。更重要的是，如果不使用网关来暴露API端点，客户端将获取后端服务的分布和部署细节。当你使用API端点集成内部前端应用时，这没什么大问题了。对于企业级API网关，它们可能被暴露给未知的需求客户端，这就不是一个好的实践。</p>
-<h4 id="反向代理或者负载均衡能被用作网关吗？"><a href="#反向代理或者负载均衡能被用作网关吗？" class="headerlink" title="反向代理或者负载均衡能被用作网关吗？"></a>反向代理或者负载均衡能被用作网关吗？</h4><p>If you are using your Gateway only to abstract a single back-end or just to terminate your TLS communication, Reverse proxy or Load balance would be sufficient. But, inherently, a proper API Gateway would fulfill the following functionalities.</p>
+<h4 id="反向代理或者负载均衡能被用作网关吗？"><a href="#反向代理或者负载均衡能被用作网关吗？" class="headerlink" title="反向代理或者负载均衡能被用作网关吗？"></a>反向代理或者负载均衡能被用作网关吗？</h4><p>如果你使用网关只为了抽象一个单点后端或者结束TLS通信，反向代理或者负载均衡就足够了。但是固然，一个合适的API网关能够满足以下的功能：</p>
 <ul>
-<li>Multiple Back-ends ( Microservices )</li>
-<li>Service Discovery</li>
-<li>Circuit breaking</li>
-<li>Authentication and Authorization</li>
-<li>Rate limiting</li>
-<li>Logging and tracing</li>
-<li>Routing</li>
-<li>Retry logic etc..</li>
+<li><p>多类型后端（微服务）</p>
+</li>
+<li><p>服务发现</p>
+</li>
+<li><p>断路限制</p>
+</li>
+<li><p>认证授权</p>
+</li>
+<li><p>限速</p>
+</li>
+<li><p>记录追踪</p>
+</li>
+<li><p>路由</p>
+</li>
+<li><p>重试逻辑</p>
+<p>等等..</p>
+</li>
 </ul>
-<h4 id="单一网关是好是坏"><a href="#单一网关是好是坏" class="headerlink" title="单一网关是好是坏?"></a>单一网关是好是坏?</h4><p>If you deploy a single API Gateway, even though it is simple and easy to manage, you are asking for the following troubles.</p>
-<p><strong>Single point of failure:</strong> If your API Gateway stops functioning properly, your entire back-end communication will go down. This is a disastrous situation and should be avoided at all costs. As a solution, you can have a scalable API Gateway cluster behind a hardware load balancer where the load balancer can be notified of the backpressure.</p>
-<p><strong>Various traffic requirements would traverse through a single API Gateway stack:</strong> Depend on the various business functionalities, the API requirements are different in terms of performance, security, compliances, etc. If you do have a single API Gateway cluster, all traffic will traverse through that, and you won’t be able to cater to different needs as required. This is not a good idea, especially if you are building an Enterprise API Gateway.</p>
-<p><strong>Make your DevOps functionality difficult:</strong> If you do any routing change or protocol change in any of your back-end services, it will impact your API Gateway as well. Hence, once you deploy such a change, the API gateway also needs to get updated using a single cluster of API Gateway.</p>
+<h4 id="单一网关是好是坏"><a href="#单一网关是好是坏" class="headerlink" title="单一网关是好是坏?"></a>单一网关是好是坏?</h4><p>如果你部署单一网关，即使很容易管理它，你也会发现以下麻烦：</p>
+<p><strong>单点故障:</strong> If your API Gateway stops functioning properly, your entire back-end communication will go down. This is a disastrous situation and should be avoided at all costs. As a solution, you can have a scalable API Gateway cluster behind a hardware load balancer where the load balancer can be notified of the backpressure.</p>
+<p><strong>多样的通信需求会逆转一个单点API网关栈:</strong> Depend on the various business functionalities, the API requirements are different in terms of performance, security, compliances, etc. If you do have a single API Gateway cluster, all traffic will traverse through that, and you won’t be able to cater to different needs as required. This is not a good idea, especially if you are building an Enterprise API Gateway.</p>
+<p><strong>使DevOps功能变得困难:</strong> If you do any routing change or protocol change in any of your back-end services, it will impact your API Gateway as well. Hence, once you deploy such a change, the API gateway also needs to get updated using a single cluster of API Gateway.</p>
 <p>Hence, the best option would be to have multiple API Gateways, specifically designed to cater to specific needs.</p>
-<h5 id="We-can-identify-two-flavors-of-API-Gateways-as-follows"><a href="#We-can-identify-two-flavors-of-API-Gateways-as-follows" class="headerlink" title="We can identify two flavors of API Gateways as follows."></a>We can identify two flavors of API Gateways as follows.</h5><ul>
-<li>Enterprise API Gateway</li>
-<li>Microservices API Gateway</li>
+<h5 id="API-网关能增强两个方面"><a href="#API-网关能增强两个方面" class="headerlink" title="API 网关能增强两个方面"></a>API 网关能增强两个方面</h5><ul>
+<li>企业API网关</li>
+<li>微服务API网关</li>
 </ul>
-<p>The Enterprise API Gateways are mainly using for the API marketplace where you are expecting any 3rd party to come and use your API after paying for the usage. Most of the API integrations cater to this nature, and the following are the main concerns you need to focus on when developing an Enterprise API Gateway.</p>
+<p>企业级API网关主要用于应用市场，在市场你期望任何第三方付费后来使用你的API。大部分API集成载体都是这样，以下情形是开发企业级API网关需要注意的地方：</p>
 <ul>
 <li>A separate enterprise integration team would do deployment. A manual process of QA →Staging → UAT → Production would be used.</li>
 <li>DevOps pipelines would hardly be used in this kind of scenario.</li>
@@ -58,23 +67,31 @@
 <li>Need to monitor invocation rates and HTTPS status. Maybe your billing would depend on this.</li>
 <li>We need to focus more on security, data compliance, and standards, etc.</li>
 </ul>
-<p>In Microservices, Gateway’s concerns are as follows.</p>
+<p>在微服务方面, 对网关的关注点如下：</p>
 <ul>
 <li>Using inside your ecosystem where the API Gateway is exposed only to your internal clients.</li>
 <li>High usage of CI/CD pipelines with deployments types such as Canary, Shadow, Blue-Green, etc.</li>
 <li>The API may expose full details of errors along with the stack trace.</li>
 <li>Non-functional requirements such as latency and performance would be considered over enterprise-level constraints such as standards, compliance, security, etc.</li>
 </ul>
-<h4 id="API-Gateway-Anti-patterns"><a href="#API-Gateway-Anti-patterns" class="headerlink" title="API Gateway Anti-patterns"></a>API Gateway Anti-patterns</h4><p>Following can be identified as the API Gateway Anti-patterns.</p>
+<h4 id="API网关反模式"><a href="#API网关反模式" class="headerlink" title="API网关反模式"></a>API网关反模式</h4><p>以下情况被视为API网关反模式：</p>
 <ul>
 <li>Overburning the Gateway by routing most of the traffic through a single service.</li>
 <li>Not considering the scalability and resiliency factors of services that API Gateway is dependent upon ( Eg: Authentication, Service discovery. Routing, etc…) Failure of these services would affect directly to the API Gateway’s availability.</li>
 <li>Avoid using the API Gateway as ESB by rerouting internal traffic using the API Gateway. The API Gateway should route only the external incoming traffic to your service layer.</li>
-<li>Ensure a single point of failure is mitigated and managed.</li>
-<li>Let your API Gateways unmonitored and isolated.</li>
+<li>确保单点故障被减轻和管理</li>
+<li>使API网关孤立以及不被监控</li>
 </ul>
-<p>What are the commercial and open source products that we can use.</p>
-<p><a target="_blank" rel="noopener" href="https://konghq.com/kong/">Kong Gateway</a><br><a target="_blank" rel="noopener" href="https://apisix.apache.org/">Apache APISIX</a><br><a target="_blank" rel="noopener" href="https://tyk.io/features/api-gateway/">Tyk</a><br><a target="_blank" rel="noopener" href="https://github.com/ThreeMammals/Ocelot">Goku</a><br><a target="_blank" rel="noopener" href="https://wso2.com/api-management/">WSO2</a><br><a target="_blank" rel="noopener" href="https://www.krakend.io/">KrakenD</a><br><a target="_blank" rel="noopener" href="https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwiwrO2OzYzwAhVPgUsFHTj9D5kQFjAAegQIBhAD&url=https://spring.io/guides/gs/routing-and-filtering/&usg=AOvVaw0wIVR1x3RVigHszRR8CZom">Zuul</a></p>
+<p>以下是我们可以采用的商业版或者开源产品：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://konghq.com/kong/">Kong Gateway</a></li>
+<li><a target="_blank" rel="noopener" href="https://apisix.apache.org/">Apache APISIX</a></li>
+<li><a target="_blank" rel="noopener" href="https://tyk.io/features/api-gateway/">Tyk</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/ThreeMammals/Ocelot">Goku</a></li>
+<li><a target="_blank" rel="noopener" href="https://wso2.com/api-management/">WSO2</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.krakend.io/">KrakenD</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwiwrO2OzYzwAhVPgUsFHTj9D5kQFjAAegQIBhAD&url=https://spring.io/guides/gs/routing-and-filtering/&usg=AOvVaw0wIVR1x3RVigHszRR8CZom">Zuul</a></li>
+</ul>
 </div></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2021-05-30T03:36:38.000Z" title="5/30/2021, 11:36:38 AM">2021-05-30</time></span><span class="level-item">Updated&nbsp;<time dateTime="2021-05-30T04:16:25.861Z" title="5/30/2021, 12:16:25 PM">2021-05-30</time></span><span class="level-item"><a class="link-muted" href="/categories/Techo/">Techo</a></span><span class="level-item">a minute read (About 193 words)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2021/05/30/Apache-KAFKA/">Apache KAFKA</a></h1><div class="content"><h2 id="Basics"><a href="#Basics" class="headerlink" title="Basics"></a>Basics</h2><p><strong>「Apache Kafka」</strong> is an open-source distributed event streaming platform used by thousands of companies for high-performance data pipelines, streaming analytics, data integration, and mission-critical applications.</p>
 <h4 id="Producers-and-Consumers"><a href="#Producers-and-Consumers" class="headerlink" title="Producers and Consumers"></a>Producers and Consumers</h4><p>Producers and consumers are services that listen to or send messages in Kafka. These services are your backend services.</p>
 <h4 id="Topics"><a href="#Topics" class="headerlink" title="Topics"></a>Topics</h4><p>Topics are addresses that producers can send messages to. Other services can listen to these topics.</p>
@@ -127,7 +144,7 @@
 <li>Kibana 是指可视化工具，可以让用户在 Elasticsearch 中使用图形和图表对数据进行可视化。</li>
 </ul>
 <h2 id="ELK-Service"><a href="#ELK-Service" class="headerlink" title="ELK Service"></a>ELK Service</h2><p><img src="https://i.loli.net/2021/05/29/W3dhlZFNyPLJXDB.png" alt="Elastic search Operation"></p>
-</div></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2021-04-12T03:41:00.000Z" title="4/12/2021, 11:41:00 AM">2021-04-12</time></span><span class="level-item">Updated&nbsp;<time dateTime="2021-06-02T06:58:22.904Z" title="6/2/2021, 2:58:22 PM">2021-06-02</time></span><span class="level-item"><a class="link-muted" href="/categories/Techo/">Techo</a></span><span class="level-item">2 minutes read (About 237 words)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2021/04/12/%E8%81%8A%E8%81%8ANFT/">About NFTs</a></h1><div class="content"><h3 id="What-is-NFT"><a href="#What-is-NFT" class="headerlink" title="What is NFT"></a>What is NFT</h3><p>NFT stands for <strong>non-fungible</strong> token.<br>(即非同质化代币，一种架构在区块链上的加密货币)</p>
+</div></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2021-04-12T03:41:00.000Z" title="4/12/2021, 11:41:00 AM">2021-04-12</time></span><span class="level-item">Updated&nbsp;<time dateTime="2021-06-02T06:58:22.904Z" title="6/2/2021, 2:58:22 PM">2021-06-02</time></span><span class="level-item"><a class="link-muted" href="/categories/Techo/">Techo</a></span><span class="level-item">2 minutes read (About 237 words)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2021/04/12/AboutNFTs/">About NFTs</a></h1><div class="content"><h3 id="What-is-NFT"><a href="#What-is-NFT" class="headerlink" title="What is NFT"></a>What is NFT</h3><p>NFT stands for <strong>non-fungible</strong> token.<br>(即非同质化代币，一种架构在区块链上的加密货币)</p>
 <p>In economics, a fungible assert is something with units that can be readily interchanged, like money.</p>
 <p>NFTs are ‘one-of-a-kind’ asserts in the digital world that can be bought and sold like any other piece of property, but they have to tangible form of their own. The digital tokens can be thought of as certificates of ownership for virtual or physical asserts.</p>
 <p>With NFTs, Artwork can be ‘tokenized’ to create a digital certificate of ownership that can be bought and sold.</p>
